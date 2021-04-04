@@ -1,0 +1,15 @@
+{
+  "818513153071251479": {
+    "_JSON_Comment_Hack": "Hive",
+    "hives": [
+      {
+        "requestChannelIDs": ["823310275025174539"],
+        "junkyardCategoryID": "",
+        "textCategoryID": "823310253859930154",
+        "voiceCategoryID": "823310253859930154",
+        "prefix": "",
+        "voiceBitrate": 960000
+      },
+    ]
+  },
+}
