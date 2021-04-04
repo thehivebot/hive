@@ -87,7 +87,7 @@ func (s *serveCmdOptions) RunE(cmd *cobra.Command, args []string) error {
 	if err != nil {
 		return fmt.Errorf("error creating Discord session: %w", err)
 	}
-	dg.Identify.Intents = discordgo.MakeIntent(discordgo.IntentsAll)
+	dg.Identify.Intents = discordgo.MakeIntent(discordgo.IntentsGuildIntegrations | discordgo.IntentsGuildMessageReactions | discordgo.IntentsGuildPresences)
 	dg.State.TrackVoice = true
 
 	haLogger := log.New(os.Stderr, "discordha: ", log.Ldate|log.Ltime)
