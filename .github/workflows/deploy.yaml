@@ -1,4 +1,4 @@
-name: Deploy
+name: Deploy to infra repo
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
           cd infrastructure
           git config --local user.email "bot@thehivebot.com"
           git config --local user.name "hive-bot"
-          git checkout -b deploy-$GITHUB_SHA
+          git checkout -b deploy-hive-$GITHUB_SHA
           mkdir imagetags || true
           echo "$GITHUB_SHA" >imagetags/hive-sha
           git add .
