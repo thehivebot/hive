@@ -34,7 +34,7 @@ func (h *HiveCommand) Register(registry command.Registry, server command.Server)
 
 // InstallSlashCommands registers the slash commands handlers
 func (h *HiveCommand) InstallSlashCommands(session *discordgo.Session) error {
-	_, err := session.ApplicationCommandCreate("", "", &discordgo.ApplicationCommand{
+	_, err := session.ApplicationCommandCreate(session.State.SessionID, "", &discordgo.ApplicationCommand{
 		Name:        "hive",
 		Description: "creates on-remand voice and text channels",
 		Options: []*discordgo.ApplicationCommandOption{

@@ -135,7 +135,7 @@ func (s *serveCmdOptions) RunE(cmd *cobra.Command, args []string) error {
 	for _, handler := range s.handlers {
 		err := handler.InstallSlashCommands(s.dg)
 		if err != nil {
-			log.Println(err)
+			log.Println("InstallSlashCommands error", err)
 		}
 	}
 
