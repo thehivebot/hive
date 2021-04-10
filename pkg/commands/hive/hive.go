@@ -217,8 +217,9 @@ func (h *HiveCommand) createChannel(s *discordgo.Session, i *discordgo.Interacti
 
 	if !isText {
 		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
+			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionApplicationCommandResponseData{
-				Content: fmt.Sprintf("Channel <#%s> has been created!  Reminder: I will delete it when it stays empty for a while", newChan.ID),
+				Content: fmt.Sprintf("Channel <#%s> has been created! Reminder: I will delete it when it stays empty for a while", newChan.ID),
 				Flags:   64,
 			},
 		})
