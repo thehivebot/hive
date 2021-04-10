@@ -119,6 +119,7 @@ func (h *HiveCommand) HiveCommand(s *discordgo.Session, i *discordgo.Interaction
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionApplicationCommandResponseData{
 				Content: "Invalid command options",
+				Flags:   64,
 			},
 		})
 		return // invalid
@@ -163,6 +164,7 @@ func (h *HiveCommand) precheck(s *discordgo.Session, i *discordgo.InteractionCre
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionApplicationCommandResponseData{
 				Content: "This command does not work in DMs",
+				Flags:   64,
 			},
 		})
 		return nil, false
@@ -174,6 +176,7 @@ func (h *HiveCommand) precheck(s *discordgo.Session, i *discordgo.InteractionCre
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionApplicationCommandResponseData{
 				Content: fmt.Sprintf("An error happened: %v", err),
+				Flags:   64,
 			},
 		})
 		return nil, false
@@ -183,6 +186,7 @@ func (h *HiveCommand) precheck(s *discordgo.Session, i *discordgo.InteractionCre
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionApplicationCommandResponseData{
 				Content: "This command only works in the Requests channels",
+				Flags:   64,
 			},
 		})
 		return nil, false
@@ -205,6 +209,7 @@ func (h *HiveCommand) createChannel(s *discordgo.Session, i *discordgo.Interacti
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionApplicationCommandResponseData{
 				Content: fmt.Sprintf("An error happened: %v", err),
+				Flags:   64,
 			},
 		})
 		return
@@ -214,6 +219,7 @@ func (h *HiveCommand) createChannel(s *discordgo.Session, i *discordgo.Interacti
 		s.InteractionRespond(i.Interaction, &discordgo.InteractionResponse{
 			Data: &discordgo.InteractionApplicationCommandResponseData{
 				Content: fmt.Sprintf("Channel <#%s> has been created!  Reminder: I will delete it when it stays empty for a while", newChan.ID),
+				Flags:   64,
 			},
 		})
 	} else if !hidden {
@@ -221,6 +227,7 @@ func (h *HiveCommand) createChannel(s *discordgo.Session, i *discordgo.Interacti
 			Type: discordgo.InteractionResponseChannelMessageWithSource,
 			Data: &discordgo.InteractionApplicationCommandResponseData{
 				Content: fmt.Sprintf("Channel <#%s> has been created!", newChan.ID),
+				Flags:   64,
 			},
 		})
 		s.ChannelMessageSend(newChan.ID, "Welcome to your text channel! If you're finished using this please say `tm!archive`")
@@ -237,7 +244,17 @@ func (h *HiveCommand) createChannel(s *discordgo.Session, i *discordgo.Interacti
 				Embeds:  []*discordgo.MessageEmbed{e.MessageEmbed},
 			},
 		})
-		s.MessageReactionAdd(i.ChannelID, i.Interaction.ID, "👋")
+		messages, err := s.ChannelMessages(i.ChannelID, 10, "", "", "")
+		if err != nil {
+			return
+		}
+
+		for _, msg := range messages {
+			if len(msg.Embeds) > 0 && len(msg.Embeds[0].Fields) > 1 && msg.Embeds[0].Fields[1].Value == newChan.ID {
+				s.MessageReactionAdd(i.ChannelID, msg.ID, "👋")
+				break
+			}
+		}
 	}
 }
 
