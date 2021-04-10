@@ -224,7 +224,6 @@ func (s *serveCmdOptions) onGuildMemberAdd(sess *discordgo.Session, m *discordgo
 }
 
 func (s *serveCmdOptions) onInteractionCreate(sess *discordgo.Session, i *discordgo.InteractionCreate) {
-	log.Println(i)
 	for _, handler := range s.onInteractionCreateHandler[i.Data.Name] {
 		handler(sess, i)
 	}
